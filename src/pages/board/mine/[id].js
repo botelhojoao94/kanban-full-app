@@ -6,7 +6,7 @@ import TopNavbar from '../../../components/TopNavbar'
 import BoardNavbar from '../../../components/BoardNavbar'
 import ListBoard from '../../../components/ListBoard'
 
-export default function BoardArea() {
+export default function MyBoardArea() {
 
     const [updateComponent, setUpdateComponent] = useState(1)
     const [isLoading, setIsLoading] = useState(true)
