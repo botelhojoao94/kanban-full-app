@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { useContext } from 'react'
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { useForm } from 'react-hook-form'
@@ -18,11 +19,11 @@ export default function Example() {
             <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-md w-full space-y-8">
                     <div>
-                        <img
+                        {/* <Image
                             className="mx-auto h-12 w-auto"
-                            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                            alt="Workflow"
-                        />
+                            src=""
+                            alt="kanban
+                        /> */}
                         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Bem-vindo de volta!</h2>
                     </div>
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit(handleSignIn)}>

@@ -8,6 +8,7 @@ module.exports = {
         DB_PORT: '3306',
         SECRET_JWT_KEY: 'y$B&E)H@McQfTjWnZr4u7x!A%C*F-JaN',
         MONGODB_URI: "mongodb+srv://adm:020565@cluster0.23uh2.mongodb.net",
-        DB_NAME: "kanban"
+        DB_NAME: "kanban",
+        CI: false
     }
 }
