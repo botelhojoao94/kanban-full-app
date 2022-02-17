@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
-import toast, { Toaster } from 'react-hot-toast';
-import Loading from '../../../components/Loading'
-import NoBoardsMsg from '../../../components/NoBoardsMsg'
-import TopNavbar from '../../../components/TopNavbar'
-import SectionTitle from '../../../components/SectionTitle'
-import CardBoards from '../../../components/CardBoards'
+import Head from 'next/head'
+import toast, { Toaster } from 'react-hot-toast'
+import { parseCookies } from 'nookies'
+import { api } from 'services/api'
+import Loading from 'components/Loading'
+import NoBoardsMsg from 'components/NoBoardsMsg'
+import TopNavbar from 'components/TopNavbar'
+import SectionTitle from 'components/SectionTitle'
+import CardBoards from 'components/CardBoards'
 
-export default function Mine() {
+export default function MyBoards() {
 
     const [updateComponent, setUpdateComponent] = useState(1)
     const [isLoading, setIsLoading] = useState(true)
@@ -15,7 +17,7 @@ export default function Mine() {
     const [myBoards, setMyBoards] = useState([])
 
     useEffect(() => {
-        axios.get(`/api/board/findmine/${localStorage.getItem('email')}`)
+        api.get(`/api/board/myboard/${localStorage.getItem('email')}`)
             .then(function (response) {
                 setIsLoading(false)
                 if (response.data.boards.length != 0) {
@@ -39,7 +41,7 @@ export default function Mine() {
     function handleCreateBoard(e) {
         e.preventDefault()
 
-        const myPromise = axios.post('/api/board/create', {
+        const myPromise = api.post('/api/board/create', {
             name: e.target[0].value,
             email: localStorage.getItem('email')
         })
@@ -62,6 +64,9 @@ export default function Mine() {
 
     return (
         <>
+            <Head>
+                <title>Kanbify - Meus Quadros</title>
+            </Head>
             {isLoading ? <Loading /> :
                 <div className='h-screen w-screen flex flex-col'>
                     <TopNavbar selected={"mine"} />
@@ -106,4 +111,21 @@ export default function Mine() {
             }
         </>
     )
+}
+
+export async function getServerSideProps(context) {
+    const { ['kanban-auth-token']: token } = parseCookies(context)
+    
+    if (!token) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {},
+    }
 }

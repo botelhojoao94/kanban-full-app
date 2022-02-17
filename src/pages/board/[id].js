@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Toaster } from 'react-hot-toast';
-import Loading from '../../../components/Loading'
-import TopNavbar from '../../../components/TopNavbar'
-import BoardNavbar from '../../../components/BoardNavbar'
-import ListBoard from '../../../components/ListBoard'
+import Head from 'next/head'
+import { Toaster } from 'react-hot-toast'
+import { parseCookies } from 'nookies'
+import { api } from 'services/api'
+import Loading from '../../components/Loading'
+import TopNavbar from '../../components/TopNavbar'
+import BoardNavbar from '../../components/BoardNavbar'
+import ListBoard from '../../components/ListBoard'
 
-export default function MyBoardArea() {
+export default function BoardArea() {
 
     const [updateComponent, setUpdateComponent] = useState(1)
     const [isLoading, setIsLoading] = useState(true)
@@ -15,7 +17,7 @@ export default function MyBoardArea() {
     const [invitedEmails, setInvitedEmails] = useState([])
 
     useEffect(() => {
-        axios.get(`/api/board/findone/${localStorage.getItem('selected_board_id')}`)
+        api.get(`/api/board/findone/${localStorage.getItem('selected_board_id')}`)
             .then(function (response) {
                 const boardData = response.data.message
                 setIsLoading(false)
@@ -30,6 +32,9 @@ export default function MyBoardArea() {
 
     return (
         <>
+            <Head>
+                <title>Kanbify - {boardTitle}</title>
+            </Head>
             {isLoading ? <Loading /> :
                 <div className='h-screen w-screen flex flex-col'>
                     <TopNavbar selected={"mine"} />
@@ -53,4 +58,21 @@ export default function MyBoardArea() {
             }
         </>
     )
+}
+
+export async function getServerSideProps(context) {
+    const { ['kanban-auth-token']: token } = parseCookies(context)
+    
+    if (!token) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {}, // will be passed to the page component as props
+    }
 }

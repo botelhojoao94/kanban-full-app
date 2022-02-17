@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect } from 'react'
+import { useState, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import OutsideClickHandler from 'react-outside-click-handler';
 import toast from 'react-hot-toast';
@@ -172,7 +172,7 @@ export default function BoardNavbar(props) {
                                                 type="email"
                                                 name="title"
                                                 id="title"
-                                                className="border-gray-300 rounded-md w-11/12 mx-auto my-1 focus:ring-indigo-500 focus:border-purple-900 block sm:text-sm"
+                                                className="border-gray-300 rounded-md w-11/12 mx-auto my-1 focus:ring-purple-900 focus:border-purple-900 block sm:text-sm"
                                                 placeholder="E-mail"
                                                 required
                                             />

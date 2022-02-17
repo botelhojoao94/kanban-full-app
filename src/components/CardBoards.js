@@ -4,7 +4,7 @@ export default function CardBoards(props) {
 
     function handleAccessBoard(e) {
         localStorage.setItem('selected_board_id', e.target.getAttribute('data-id'))
-        Router.push(`/board/mine/${e.target.getAttribute('data-id')}`)
+        Router.push(`/board/${e.target.getAttribute('data-id')}`)
     }
 
     return (

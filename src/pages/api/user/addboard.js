@@ -1,19 +1,13 @@
 import { connectToDatabase } from '../../../database/dbConnection'
 import { ObjectId } from 'mongodb';
 
-
-export default async function checkUser(req, res) {
-
-    console.log(req.body)
+export default async function addSharedBoard (req, res) {
 
     let response = {}
 
     try {
-        // db connection
         let { db } = await connectToDatabase();
-        // select collection
         let collection = db.collection('users')
-        // fetch data
         let user = await collection
             .findOne({ "email": req.body.email })
         if (user != null) {
@@ -33,9 +27,7 @@ export default async function checkUser(req, res) {
         }
         return res.json(response)
     }
-
     catch (error) {
-        // return the error
         response.error = true
         response.msg = new Error(error).message
         return res.json(response);

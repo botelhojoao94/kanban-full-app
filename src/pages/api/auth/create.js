@@ -6,14 +6,10 @@ export default async function createUser(req, res) {
     let response = {}
 
     try {
-        // db connection
         let { db } = await connectToDatabase();
-        // select collection
         let collection = db.collection('users')
-        // fetch data
         let user = await collection
             .findOne({ "email": req.body.email })
-        // return the board
         if (user != null) {
             response.error = true
             response.msg = 'email_already_exists'
@@ -25,9 +21,7 @@ export default async function createUser(req, res) {
             response.msg = 'registered'
             return res.json(response)
         }
-
     } catch (error) {
-        // return the error
         response.error = true
         response.msg = new Error(error).message
         return res.json(response)

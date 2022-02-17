@@ -1,5 +1,14 @@
 module.exports = {
     reactStrictMode: true,
+    async redirects() {
+        return [
+          {
+            source: '/',
+            destination: '/login',
+            permanent: true,
+          },
+        ]
+      },
     env: {
         DB_HOST: 'bxxvx8cvmo3oqtjgaspx-mysql.services.clever-cloud.com',
         DB_USER: 'u0olxaknixv8zbdb',
