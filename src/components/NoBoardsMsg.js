@@ -7,7 +7,7 @@ export default function NoBoardsMsg(props) {
     function handleCreateBoard() {
         props.setIsLoading(true)
         axios.post('/api/board/create', {
-            name: "Meu quadro",
+            name: "Novo quadro",
             email: localStorage.getItem('email')
         })
             .then(res => {

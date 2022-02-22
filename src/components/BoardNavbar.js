@@ -1,3 +1,4 @@
+
 import { useState, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import OutsideClickHandler from 'react-outside-click-handler';
@@ -89,6 +90,11 @@ export default function BoardNavbar(props) {
         });
     }
 
+    function preventEnter(e) {
+        if (e.keyCode == 13)
+            e.preventDefault()
+    }
+
     return (
         <header className="bg-white shadow">
             <DeleteModal showDeleteModal={showDeleteModal} setShowDeleteModal={setShowDeleteModal} deletedItem={"quadro"} />
@@ -98,7 +104,9 @@ export default function BoardNavbar(props) {
                     disabled={titleClicked ? undefined : true}
                     onOutsideClick={handleSaveTitle}
                 >
-                    <h1 id="title_board" className="text-3xl font-bold text-gray-700 cursor-pointer rounded-md" suppressContentEditableWarning={true} contentEditable="true" onClick={() => { setTitleClicked(true) }}>{props.title}</h1>
+                    <h1 id="title_board" className="text-3xl font-bold text-gray-700 cursor-pointer rounded-md" suppressContentEditableWarning={true} contentEditable="true" onClick={() => { setTitleClicked(true) }} onKeyDown={preventEnter}>
+                        {props.title}
+                    </h1>
                 </OutsideClickHandler>
 
                 <div className="flex items-center gap-5 text-gray-700">
@@ -117,7 +125,7 @@ export default function BoardNavbar(props) {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+                            <Menu.Items className="origin-top-right absolute z-50 right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
                                 <div className="py-1">
                                     <form onSubmit={handleAddList}>
                                         <input
@@ -150,7 +158,7 @@ export default function BoardNavbar(props) {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+                            <Menu.Items className="origin-top-right absolute z-50 right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
                                 <div className="py-1">
                                     {props.emails.map((email, key) => {
                                         return (
@@ -165,21 +173,20 @@ export default function BoardNavbar(props) {
                                         )
                                     })}
                                 </div>
-                                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
-                                    <div className="py-1">
-                                        <form onSubmit={handleAddEmail}>
-                                            <input
-                                                type="email"
-                                                name="title"
-                                                id="title"
-                                                className="border-gray-300 rounded-md w-11/12 mx-auto my-1 focus:ring-purple-900 focus:border-purple-900 block sm:text-sm"
-                                                placeholder="E-mail"
-                                                required
-                                            />
-                                            <input type="submit" value="+ Convidar" className="w-full p-2 text-gray-700 text-sm cursor-pointer hover:bg-gray-100" />
-                                        </form>
-                                    </div>
-                                </Menu.Items>
+                                <div className="py-1">
+                                    <form onSubmit={handleAddEmail}>
+                                        <input
+                                            type="email"
+                                            name="title"
+                                            id="title"
+                                            className="border-gray-300 rounded-md w-11/12 mx-auto my-1 focus:ring-purple-900 focus:border-purple-900 block sm:text-sm"
+                                            placeholder="E-mail"
+                                            required
+                                        />
+                                        <input type="submit" value="+ Convidar" className="w-full p-2 text-gray-700 text-sm cursor-pointer hover:bg-gray-100" />
+                                    </form>
+                                </div>
+
                             </Menu.Items>
 
                         </Transition>
@@ -200,7 +207,7 @@ export default function BoardNavbar(props) {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+                            <Menu.Items className="origin-top-right absolute z-50 right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
                                 <div className="py-1">
                                     <Menu.Item onClick={handleDeleteBoard}>
                                         <div className="w-full p-2 text-gray-700 text-sm cursor-pointer hover:bg-gray-100">

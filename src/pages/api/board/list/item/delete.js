@@ -1,7 +1,7 @@
 import { connectToDatabase } from '../../../../../database/dbConnection'
-import { ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb'
 
-export default async function editTitle(req, res) {
+export default async function deleteItem(req, res) {
 
     let response = {}
 
@@ -10,10 +10,9 @@ export default async function editTitle(req, res) {
         let collection = db.collection('board')
         const resposta = await collection.updateOne(
             { "_id": ObjectId(req.body.board_id) },
-            { $set: { "lists.$[outer].items.$[inner].title": req.body.new_title } },
-            { arrayFilters: [{ "outer._id": ObjectId(req.body.list_id) }, { "inner._id": ObjectId(req.body.item_id) }] }
+            { $pull: { "lists.$[outer].items": { "_id": ObjectId(req.body.item_id) } } },
+            { arrayFilters: [{ "outer._id": ObjectId(req.body.list_id) }] }
         )
-        console.log(resposta)
         response.error = false
         response.msg = 'modified'
         return res.json(response)

@@ -2,8 +2,8 @@ import Router from 'next/router';
 import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationIcon } from '@heroicons/react/outline'
-import toast, { Toaster } from 'react-hot-toast';
-import axios from 'axios'
+import toast from 'react-hot-toast';
+import { api } from 'services/api'
 
 export default function DeleteModal(props) {
 
@@ -12,7 +12,7 @@ export default function DeleteModal(props) {
     function handleDelete() {
         if (props.deletedItem == 'quadro') {
             props.setShowDeleteModal(false)
-            const myPromise = axios.get(`/api/board/delete/${localStorage.getItem('selected_board_id')}`)
+            const myPromise = api.get(`/api/board/delete/${localStorage.getItem('selected_board_id')}`)
             toast.promise(myPromise, {
                 loading: 'Aguarde!',
                 success: 'Quadro excluído!',
@@ -26,17 +26,34 @@ export default function DeleteModal(props) {
                 board_id: localStorage.getItem('selected_board_id'),
                 list_id: localStorage.getItem('selected_list_id')
             }
-            const myPromise = axios.post('/api/board/list/delete', values)
+            const myPromise = api.post('/api/board/list/delete', values)
                 .then(res => {
                     if (!res.data.error)
                         props.setUpdateComponent(props.updateComponent + 1)
-
                 })
             toast.promise(myPromise, {
                 loading: 'Aguarde!',
                 success: 'Lista Excluída!',
                 error: 'Ops! Não foi possível excluir a lista no momento!',
-            });
+            })
+        }
+        else {
+            props.setShowDeleteModal(false)
+            const values = {
+                board_id: localStorage.getItem('selected_board_id'),
+                list_id: localStorage.getItem('selected_list_id'),
+                item_id: localStorage.getItem('selected_item_id')
+            }
+            const myPromise = api.post('/api/board/list/item/delete', values)
+                .then(res => {
+                    if (!res.data.error)
+                        props.setUpdateComponent(props.updateComponent + 1)
+                })
+            toast.promise(myPromise, {
+                loading: 'Aguarde!',
+                success: 'Item Excluído!',
+                error: 'Ops! Não foi possível excluir o item no momento!',
+            })
         }
     }
 
@@ -66,6 +83,22 @@ export default function DeleteModal(props) {
                     <div className="mt-2 text-sm text-gray-500">
                         <p >
                             Você tem certeza que deseja excluir esta lista?
+                        </p>
+                        <p >
+                            Após a exclusão não será mais possível recuperar!
+                        </p>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
+                        Excluir item
+                    </Dialog.Title>
+                    <div className="mt-2 text-sm text-gray-500">
+                        <p >
+                            Você tem certeza que deseja excluir este item?
                         </p>
                         <p >
                             Após a exclusão não será mais possível recuperar!

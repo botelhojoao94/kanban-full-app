@@ -34,8 +34,8 @@ export default function MyBoards() {
     }, [updateComponent, isNewUser])
 
     function handleShowCreateBoardField(e) {
-        e.target.parentNode.classList.add("hidden")
-        e.target.parentNode.nextElementSibling.classList.remove("hidden")
+        e.target.classList.add("hidden")
+        e.target.nextElementSibling.classList.remove("hidden")
     }
 
     function handleCreateBoard(e) {
@@ -87,15 +87,15 @@ export default function MyBoards() {
                                             )
                                         })}
                                         <div className="bg-white rounded-xl border border-gray-200 shadow w-64 h-24 flex flex-col items-center justify-center ">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 fill-gray-500 cursor-pointer hover:fill-gray-400" viewBox="0 0 20 20" fill="currentColor" onClick={handleShowCreateBoardField}>
-                                                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                                            </svg>
+                                            <div className="text-gray-500 text-8xl mb-3 cursor-pointer hover:text-gray-400" onClick={handleShowCreateBoardField}>
+                                                +
+                                            </div>
                                             <form onSubmit={handleCreateBoard} className="hidden flex w-full flex-col">
                                                 <input
                                                     type="text"
                                                     name="title"
                                                     id="title"
-                                                    className="border-gray-300 rounded-md w-11/12 mx-auto mb-2 focus:ring-indigo-500 focus:border-purple-900 sm:text-sm"
+                                                    className="border-gray-300 rounded-md w-11/12 mx-auto mb-2 focus:ring-purple-900 focus:border-purple-900 sm:text-sm"
                                                     placeholder="Título"
                                                     required
                                                 />
@@ -115,7 +115,7 @@ export default function MyBoards() {
 
 export async function getServerSideProps(context) {
     const { ['kanban-auth-token']: token } = parseCookies(context)
-    
+
     if (!token) {
         return {
             redirect: {

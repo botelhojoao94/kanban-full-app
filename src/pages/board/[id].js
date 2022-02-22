@@ -36,24 +36,23 @@ export default function BoardArea() {
                 <title>Kanbify - {boardTitle}</title>
             </Head>
             {isLoading ? <Loading /> :
-                <div className='h-screen w-screen flex flex-col'>
+                <div className='w-screen h-screen flex flex-col'>
+
                     <TopNavbar selected={"mine"} />
+
+                    <BoardNavbar title={boardTitle} emails={invitedEmails} updateComponent={updateComponent} setUpdateComponent={setUpdateComponent} />
                     <Toaster
                         position="top-right"
                         reverseOrder={true}
                     />
-                    <div className="grow">
-                        <BoardNavbar title={boardTitle} emails={invitedEmails} updateComponent={updateComponent} setUpdateComponent={setUpdateComponent} />
-                        <div className="h-full w-screen px-4 pt-4 flex flex-row">
-                            <div className="h-full flex flex-row gap-6 overflow-x-auto pb-4">
-                                {lists.map((list, key) => {
-                                    return (
-                                        <ListBoard list={list} key={key} setUpdateComponent={setUpdateComponent} />
-                                    )
-                                })}
-                            </div>
-                        </div>
+                    <div className="flex flex-row gap-6 overflow-x-auto p-4">
+                        {lists.map((list, key) => {
+                            return (
+                                <ListBoard list={list} lists={lists} key={key} setUpdateComponent={setUpdateComponent} updateComponent={updateComponent} />
+                            )
+                        })}
                     </div>
+
                 </div>
             }
         </>
@@ -62,7 +61,7 @@ export default function BoardArea() {
 
 export async function getServerSideProps(context) {
     const { ['kanban-auth-token']: token } = parseCookies(context)
-    
+
     if (!token) {
         return {
             redirect: {
@@ -73,6 +72,6 @@ export async function getServerSideProps(context) {
     }
 
     return {
-        props: {}, // will be passed to the page component as props
+        props: {},
     }
 }
